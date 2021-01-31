@@ -17,21 +17,17 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 import { useFormik } from 'formik';
 import { toast } from 'react-toastify';
-import * as yup from 'yup';
+
 import { convertBase64 } from '../../../config/helper';
 
 import { Button, Container, Grid, TextField } from '@material-ui/core';
 import { useStyles } from './style';
+import { validationSchema } from './helper';
 
 const ArticleForm = ({ article, fetchArticle, addArticle, updateArticle, setUser, user }) => {
   const history = useHistory();
   const classes = useStyles();
   const { id } = useParams();
-
-  const validationSchema = yup.object({
-    title: yup.string().required('title is required'),
-    content: yup.string().required('content is required'),
-  });
 
   const { handleSubmit, handleChange, values, setFieldValue, errors } = useFormik({
     enableReinitialize: true,
@@ -39,11 +35,10 @@ const ArticleForm = ({ article, fetchArticle, addArticle, updateArticle, setUser
     validationSchema: validationSchema,
     onSubmit: (_values) => {
       if (id === 'new') {
-        addArticle(_values);
+        addArticle({ ..._values, userName: user.userName });
         history.replace(`/articles/`);
       } else {
         updateArticle(_values);
-        // window.location.replace(`/articles/${_values.id}`);
         history.replace(`/articles/`);
       }
     },

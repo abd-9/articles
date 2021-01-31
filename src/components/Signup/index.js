@@ -4,23 +4,26 @@ import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 
 import { connect } from 'react-redux';
-import { changeField, signUpAction } from '../../redux/actions';
+import { signUpAction } from '../../redux/actions';
 
 import { Button, Container, Grid, TextField } from '@material-ui/core';
 import { useStyles } from './style';
+import { validationSchema } from './helper';
+import { useFormik } from 'formik';
 
-const Signup = ({ updateField, user, signUp }) => {
+const Signup = ({ user, signUp }) => {
   const history = useHistory();
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    updateField(name, value);
-  };
+
   const classes = useStyles();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    signUp(user, () => history.push('/articles'));
-  };
+  const { handleSubmit, handleChange, values, errors } = useFormik({
+    enableReinitialize: true,
+    initialValues: user,
+    validationSchema: validationSchema,
+    onSubmit: (_values) => {
+      signUp(_values, () => history.push('/articles'));
+    },
+  });
 
   return (
     <Container className={classes.container} maxWidth="xs">
@@ -36,8 +39,9 @@ const Signup = ({ updateField, user, signUp }) => {
                   placeholder="First name"
                   size="small"
                   variant="outlined"
-                  value={user.firstName}
+                  value={values.firstName}
                   onChange={handleChange}
+                  error={errors.firstName}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -47,8 +51,9 @@ const Signup = ({ updateField, user, signUp }) => {
                   name="lastName"
                   size="small"
                   variant="outlined"
-                  value={user.lastName}
+                  value={values.lastName}
                   onChange={handleChange}
+                  error={errors.lastName}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -58,8 +63,9 @@ const Signup = ({ updateField, user, signUp }) => {
                   name="userName"
                   size="small"
                   variant="outlined"
-                  value={user.userName}
+                  value={values.userName}
                   onChange={handleChange}
+                  error={errors.userName}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -70,8 +76,10 @@ const Signup = ({ updateField, user, signUp }) => {
                   size="small"
                   type="password"
                   variant="outlined"
-                  value={user.password}
+                  value={values.password}
                   onChange={handleChange}
+                  error={errors.password}
+                  helperText={errors.password}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -99,12 +107,10 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToPropa = (dispatch) => ({
-  updateField: (fieldName, value) => dispatch(changeField(fieldName, value)),
   signUp: (user, callBack) => dispatch(signUpAction(user, callBack)),
 });
 
 Signup.propTypes = {
-  updateField: PropTypes.func.isRequired,
   user: PropTypes.shape({}),
 };
 
