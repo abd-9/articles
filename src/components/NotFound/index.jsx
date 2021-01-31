@@ -5,9 +5,9 @@ import { useHistory } from 'react-router-dom';
 const NotFound = () => {
   const history = useHistory();
   return (
-     <div style={{    textAlign: "center"}}>
-      <h1>Page not found!</h1>
-      <Button color="primary" variant="contained" onClick={() => history.push('/signup')}>
+     <div data-test="item" style={{    textAlign: "center"}}>
+      <h1 data-test="item">Page not found!</h1>
+      <Button data-test="item" color="primary" variant="contained" onClick={() => history.push('/signup')}>
         Go signup
       </Button>
      </div>

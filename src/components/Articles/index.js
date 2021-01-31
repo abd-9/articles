@@ -21,7 +21,7 @@ const Articles = ({ fetchArticle }) => {
   }, [id]);
 
   return (
-    <Container className={classes.container}>
+    <Container className={classes.container} data-test="articles">
       <Grid container justify="space-around">
         <Grid item xs={3}>
           <ArticlesList />
@@ -39,11 +39,11 @@ const mapDispatchToPropa = (dispatch) => ({
 });
 
 Articles.propTypes = {
-  user: PropTypes.shape({}),
+  fetchArticle: PropTypes.func,
 };
 
 Articles.defaultProps = {
-  user: {},
+  fetchArticle: () => {},
 };
 
 export default connect(null, mapDispatchToPropa)(Articles);

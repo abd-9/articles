@@ -22,7 +22,7 @@ const Article = ({ articleData, deleteArticl, user }) => {
   };
 
   return articleData.id ? (
-    <Card className={classes.root} variant="outlined">
+    <Card className={classes.root} variant="outlined" id="articleCard">
       <CardContent>
         <Typography className={classes.title} color="textSecondary" gutterBottom>
           {articleData.creationDate}
@@ -37,8 +37,9 @@ const Article = ({ articleData, deleteArticl, user }) => {
           dangerouslySetInnerHTML={{ __html: articleData.content || <></> }}
         ></Typography>
       </CardContent>
+
       {hasPermission() && (
-        <CardActions>
+        <CardActions id="articleButtons">
           <Button
             size="small"
             onClick={() => history.push(`/articles/articleForm/${articleData.id}`)}

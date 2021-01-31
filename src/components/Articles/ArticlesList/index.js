@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -25,7 +24,6 @@ const ArticlesList = ({ articlesList, fetchArticles }) => {
     fetchArticles();
   }, []);
 
-  console.log('articles', articlesList);
   return (
     <List component="nav" className={classes.root} aria-label="contacts">
       {articlesList?.map((a, index) => (
@@ -34,6 +32,7 @@ const ArticlesList = ({ articlesList, fetchArticles }) => {
           button
           key={a.id}
           onClick={() => history.push(`/articles/${a.id}`)}
+          data-test="listItemComponent"
         >
           <ListItemText primary={a.title} />
         </ListItem>
