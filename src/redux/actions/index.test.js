@@ -10,6 +10,7 @@ describe('actions', () => {
     };
     expect(actions.addArticlAction(article)).toEqual(expectedAction);
   });
+
   it('edit Article Action', () => {
     const article = { id: 'test', title: 'title1' };
     const expectedAction = {

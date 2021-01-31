@@ -1,8 +1,8 @@
 import * as actions from '../actions';
 import articleReducer from './article';
 
-describe('todos reducer', () => {
-  it('should return the initial state', () => {
+describe('article reducer', () => {
+  it('should return the article', () => {
     const article = { id: '1', title: 'title1', userName: 'userNAme1 ', content: 'content1' };
 
     expect(

@@ -11,46 +11,14 @@ import Articles from './components/Articles';
 import ArticleForm from './components/Articles/ArticleForm';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { setUserAction } from './redux/actions';
 
-const App = ({ user }) => {
+const App = ({ user, setUserInRedux }) => {
   useEffect(() => {
-    localStorage.setItem(
-      'articles',
-      JSON.stringify([
-        {
-          id: 'sss',
-          title: 'ssssss',
-          creationDate: 'creationDate',
-          content: 'content 1 ',
-          image: null,
-          userName: 'abd',
-        },
-        {
-          id: 'ss22s',
-          title: 'titel2',
-          creationDate: 'creationDate',
-          content: 'content 2 ',
-          image: null,
-          userName: 'abd',
-        },
-        {
-          id: 's112ss',
-          title: 'titel3',
-          creationDate: 'creationDate',
-          content: 'content3 ',
-          image: null,
-          userName: 'sss',
-        },
-        {
-          id: 'ss212s',
-          title: 'titel4',
-          creationDate: 'creationDate',
-          content: 'content 4 ',
-          image: null,
-          userName: 'abd11',
-        },
-      ])
-    );
+    const currentUser = JSON.parse(localStorage.getItem('user'));
+    if (currentUser?.id) {
+      setUserInRedux(currentUser);
+    }
   }, []);
 
   return (
@@ -84,4 +52,7 @@ const mapStateToProps = (state) => {
     user,
   };
 };
-export default connect(mapStateToProps, null)(App);
+const mapDispatchToPropa = (dispatch) => ({
+  setUserInRedux: (user) => dispatch(setUserAction(user)),
+});
+export default connect(mapStateToProps, mapDispatchToPropa)(App);
