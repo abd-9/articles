@@ -1,7 +1,6 @@
 export const AUTH_INITIAL_STATE = {
   firstName: '',
   lastName: '',
-  email: '',
   password: '',
   userId: null,
   userName: '',
@@ -12,6 +11,7 @@ export const AuthActionTypes = Object.freeze({
   SIGN_IN: 'SIGN_IN',
   SIGN_UP: 'SIGN_UP',
   SET_USER: 'SET_USER',
+  LOGOUT: 'LOGOUT',
 });
 
 export const changeField = (fieldName, fieldValue) => ({
@@ -20,19 +20,25 @@ export const changeField = (fieldName, fieldValue) => ({
   fieldValue,
 });
 
-export const signIn = (email, password, firstSignIn) => ({
+export const signInAction = (userName, password, callBack) => ({
   type: AuthActionTypes.SIGN_IN,
-  payload: {
-    email,
+  user: {
+    userName,
     password,
   },
+  callBack,
+});
+export const logoutAction = () => ({
+  type: AuthActionTypes.LOGOUT,
 });
 
-export const signUp = () => ({
+export const signUpAction = (user, callBack) => ({
   type: AuthActionTypes.SIGN_UP,
+  user,
+  callBack,
 });
 
-export const setUser = (user) => ({
+export const setUserAction = (user) => ({
   type: AuthActionTypes.SET_USER,
   user,
 });

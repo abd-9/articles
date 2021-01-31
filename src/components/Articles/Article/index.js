@@ -1,56 +1,73 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { changeField } from '../../../redux/actions';
-import { useStyles } from './style';
 import { useHistory } from 'react-router-dom';
 
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
+import { deleteArticlAction } from '../../../redux/actions';
 
-const Article = ({ articleData }) => {
+import { Button, CardContent, CardActions, Card, Typography } from '@material-ui/core';
+import { useStyles } from './style';
+
+const Article = ({ articleData, deleteArticl, user }) => {
   const classes = useStyles();
   const history = useHistory();
 
-  return (
+  const handleDelete = () => {
+    deleteArticl(articleData.id);
+  };
+
+  const hasPermission = () => {
+    return articleData.userName === user.userName;
+  };
+
+  return articleData.id ? (
     <Card className={classes.root} variant="outlined">
       <CardContent>
         <Typography className={classes.title} color="textSecondary" gutterBottom>
-          {articleData.createDate} Word of the Day
+          {articleData.creationDate}
         </Typography>
         <Typography variant="h5" component="h2">
-          {articleData.title} sss
+          {articleData.title}
         </Typography>
-        <Typography className={classes.pos} color="textSecondary">
-          adjective
-        </Typography>
-        <Typography variant="body2" component="p">
-          {articleData.content}
-        </Typography>
+        <img src={articleData.image || ''} className={classes.image} />
+        <Typography
+          variant="body2"
+          component="div"
+          dangerouslySetInnerHTML={{ __html: articleData.content || <></> }}
+        ></Typography>
       </CardContent>
-      <CardActions>
-        <Button size="small" onClick={() => history.push('/articles/articleForm/sss')}>
-          Edit{' '}
-        </Button>
-        <Button size="small">delete </Button>
-      </CardActions>
+      {hasPermission() && (
+        <CardActions>
+          <Button
+            size="small"
+            onClick={() => history.push(`/articles/articleForm/${articleData.id}`)}
+          >
+            Edit
+          </Button>
+          <Button size="small" onClick={handleDelete}>
+            delete
+          </Button>
+        </CardActions>
+      )}
     </Card>
+  ) : (
+    ''
   );
 };
 
 const mapStateToProps = (state) => {
+  const { article } = state.article;
   const user = state.auth;
+
   return {
     user,
+    articleData: article,
   };
 };
 
 const mapDispatchToPropa = (dispatch) => ({
-  updateField: (fieldName, value) => dispatch(changeField(fieldName, value)),
-  actionSignup: (fieldName, value) => dispatch(changeField(fieldName, value)),
+  deleteArticl: (id) => dispatch(deleteArticlAction(id)),
 });
 
 Article.propTypes = {

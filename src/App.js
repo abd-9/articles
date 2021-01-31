@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import './App.css';
 
 import { Route, Switch } from 'react-router-dom';
@@ -11,7 +12,46 @@ import ArticleForm from './components/Articles/ArticleForm';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function App() {
+const App = ({ user }) => {
+  useEffect(() => {
+    localStorage.setItem(
+      'articles',
+      JSON.stringify([
+        {
+          id: 'sss',
+          title: 'ssssss',
+          creationDate: 'creationDate',
+          content: 'content 1 ',
+          image: null,
+          userName: 'abd',
+        },
+        {
+          id: 'ss22s',
+          title: 'titel2',
+          creationDate: 'creationDate',
+          content: 'content 2 ',
+          image: null,
+          userName: 'abd',
+        },
+        {
+          id: 's112ss',
+          title: 'titel3',
+          creationDate: 'creationDate',
+          content: 'content3 ',
+          image: null,
+          userName: 'sss',
+        },
+        {
+          id: 'ss212s',
+          title: 'titel4',
+          creationDate: 'creationDate',
+          content: 'content 4 ',
+          image: null,
+          userName: 'abd11',
+        },
+      ])
+    );
+  }, []);
   return (
     <div className="App">
       <header className="App-header">
@@ -22,14 +62,25 @@ function App() {
         <Switch>
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/signin" component={Signin} />
-          <Route exact path="/articles" component={Articles} />
-          <Route exact path="/articles/articleForm/:id" component={ArticleForm} />
+          {user.isLoggedIn && (
+            <>
+              <Route exact path="/articles/" component={Articles} />
+              <Route exact path="/articles/:id" component={Articles} />
+              <Route exact path="/articles/articleForm/:id" component={ArticleForm} />
+            </>
+          )}
           <Route component={NotFound} />
         </Switch>
       </body>
       <footer></footer>
     </div>
   );
-}
+};
 
-export default App;
+const mapStateToProps = (state) => {
+  const user = state?.auth || {};
+  return {
+    user,
+  };
+};
+export default connect(mapStateToProps, null)(App);

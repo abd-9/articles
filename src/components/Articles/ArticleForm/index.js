@@ -1,19 +1,32 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Container, Grid, TextField } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { changeArticleField, fetchArticleAction } from '../../../redux/actions';
-import { useFormik } from 'formik';
-import * as yup from 'yup';
-import { useStyles } from './style';
 import { useHistory, useParams } from 'react-router-dom';
+
+import {
+  addArticlAction,
+  fetchArticleAction,
+  setUserAction,
+  updateArticleAction,
+} from '../../../redux/actions';
+
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
+import { useFormik } from 'formik';
 import { toast } from 'react-toastify';
+import * as yup from 'yup';
 import { convertBase64 } from '../../../config/helper';
 
-const ArticleForm = ({ changeField, article, fetchArticle }) => {
+import { Button, Container, Grid, TextField } from '@material-ui/core';
+import { useStyles } from './style';
+
+const ArticleForm = ({ article, fetchArticle, addArticle, updateArticle, setUser, user }) => {
+  const history = useHistory();
   const classes = useStyles();
+  const { id } = useParams();
 
   const validationSchema = yup.object({
     title: yup.string().required('title is required'),
@@ -21,27 +34,32 @@ const ArticleForm = ({ changeField, article, fetchArticle }) => {
   });
 
   const { handleSubmit, handleChange, values, setFieldValue, errors } = useFormik({
-    initialValues: {
-      ...article,
-    },
+    enableReinitialize: true,
+    initialValues: article,
     validationSchema: validationSchema,
     onSubmit: (_values) => {
-      console.log('valuesssssss', _values);
-      // send user data
+      if (id === 'new') {
+        addArticle(_values);
+        history.replace(`/articles/`);
+      } else {
+        updateArticle(_values);
+        // window.location.replace(`/articles/${_values.id}`);
+        history.replace(`/articles/`);
+      }
     },
   });
-
-  const history = useHistory();
-
-  const { id } = useParams();
+  const hasPermission = () => {
+    return article?.userName === user?.userName;
+  };
 
   useEffect(() => {
-    fetchArticle(id);
+    if (!hasPermission() && !(id === 'new')) return history.push('/articles');
+    fetchArticle(id === 'new' ? null : id);
   }, [id]);
 
   const handleFileRead = async (event) => {
     const file = event.target.files[0];
-    if (file.size > 3194304) {
+    if (file?.size > 3194304) {
       return toast.error('Larg image!');
     }
     const base64 = await convertBase64(file);
@@ -91,18 +109,13 @@ const ArticleForm = ({ changeField, article, fetchArticle }) => {
               inputProps={{ accept: 'image/*' }}
               onChange={(e) => handleFileRead(e)}
             ></input>
-            <img src={article.image || ''} className={classes.image} />
-            <Button variant="outlined" color="default" onClick={removeImage}>
-              Remove
-            </Button>
+            {values.image ? <button onClick={removeImage}>Remove</button> : <></>}
+            <Grid item xs={12} sm={12} lg={12}>
+              <img src={values.image || ''} className={classes.image} />
+            </Grid>
           </Grid>
           <Grid item xs={4} container>
-            <Button
-              color="primary"
-              variant="contained"
-              type="submit"
-              onClick={() => toast.error('ssss')}
-            >
+            <Button color="primary" variant="contained" type="submit">
               {id === 'new' ? 'Create' : 'Update'}
             </Button>
           </Grid>
@@ -113,14 +126,19 @@ const ArticleForm = ({ changeField, article, fetchArticle }) => {
 };
 const mapStateToProps = (state) => {
   const { article } = state.article;
+  const user = state.auth;
+
   return {
     article,
+    user,
   };
 };
 
 const mapDispatchToPropa = (dispatch) => ({
-  changeField: (fieldName, value) => dispatch(changeArticleField(fieldName, value)),
   fetchArticle: (articleId) => dispatch(fetchArticleAction(articleId)),
+  addArticle: (article) => dispatch(addArticlAction(article)),
+  updateArticle: (article) => dispatch(updateArticleAction(article)),
+  setUser: (user) => dispatch(setUserAction(user)),
 });
 
 ArticleForm.propTypes = {

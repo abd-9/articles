@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Container, Grid, TextField } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { changeField } from '../../redux/actions';
+import { changeField, signInAction } from '../../redux/actions';
 import { useStyles } from './style';
 import { useHistory } from 'react-router-dom';
 
-const Signin = ({ updateField, user }) => {
+const Signin = ({ updateField, user, signin }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     updateField(name, value);
@@ -16,8 +16,8 @@ const Signin = ({ updateField, user }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('user', user);
-    // send user data
+
+    signin(user.userName, user.password, () => history.push('/articles'));
   };
 
   return (
@@ -85,7 +85,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToPropa = (dispatch) => ({
   updateField: (fieldName, value) => dispatch(changeField(fieldName, value)),
-  actionSignin: (fieldName, value) => dispatch(changeField(fieldName, value)),
+  signin: (userName, password, callBack) => dispatch(signInAction(userName, password, callBack)),
 });
 
 export default connect(mapStateToProps, mapDispatchToPropa)(Signin);

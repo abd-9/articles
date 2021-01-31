@@ -14,10 +14,10 @@ const authReducer = (state = AUTH_INITIAL_STATE, action) => {
         [action.fieldName]: action.fieldValue,
       };
 
-    case AuthActionTypes.SET_PROFILE:
+    case AuthActionTypes.SET_USER:
       return {
         ...state,
-        ...action.profile,
+        ...action.user,
       };
 
     default:

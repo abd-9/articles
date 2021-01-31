@@ -15,16 +15,16 @@ export const ArticleActionTypes = Object.freeze({
   ADD_ARTICLE: 'ADD_ARTICLE',
   DELETE_ARTICLE: 'DELETE_ARTICLE',
   SUCESS_FETCH_ARTICLES: 'SUCESS_FETCH_ARTICLES',
-  START_FETCH_ARTICLE: 'START_FETCH_ARTICLE',
+  START_FETCH_ARTICLES: 'START_FETCH_ARTICLES',
   FETCH_ARTICLE: 'FETCH_ARTICLE',
+  FETCH_ARTICLE_SUCCESS: 'FETCH_ARTICLE_SUCCESS',
 });
 
-export const fetchArticlesStartActions = (userId) => ({
-  type: ArticleActionTypes.START_FETCH_ARTICLE,
-  payload: { userId },
+export const fetchArticlesStartAction = () => ({
+  type: ArticleActionTypes.START_FETCH_ARTICLES,
 });
 
-export const fetchArticlesSuccessActions = (articlesList) => ({
+export const fetchArticlesSuccessAction = (articlesList) => ({
   type: ArticleActionTypes.SUCESS_FETCH_ARTICLES,
   payload: { articlesList },
 });
@@ -38,22 +38,19 @@ export const addArticlAction = (article) => ({
 
 export const deleteArticlAction = (articleId) => ({
   type: ArticleActionTypes.DELETE_ARTICLE,
-  payload: {
-    articleId,
-  },
+  articleId,
 });
 
-export const updateArticlAction = (article) => ({
+export const updateArticleAction = (article) => ({
   type: ArticleActionTypes.UPDATE_ARTICLE,
   payload: {
     article,
   },
 });
 
-export const changeArticleField = (fieldName, fieldValue) => ({
-  type: ArticleActionTypes.CHANGE_ARTICLE_FIELD,
-  fieldName,
-  fieldValue,
+export const fetchArticleSuccessAction = (article) => ({
+  type: ArticleActionTypes.FETCH_ARTICLE_SUCCESS,
+  payload: article,
 });
 
 export const fetchArticleAction = (articleId) => ({

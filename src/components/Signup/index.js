@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Container, Grid, TextField } from '@material-ui/core';
-import { connect } from 'react-redux';
-import { changeField } from '../../redux/actions';
-import { useStyles } from './style';
+
 import { useHistory } from 'react-router-dom';
 
-const Signup = ({ updateField, user }) => {
+import { connect } from 'react-redux';
+import { changeField, signUpAction } from '../../redux/actions';
+
+import { Button, Container, Grid, TextField } from '@material-ui/core';
+import { useStyles } from './style';
+
+const Signup = ({ updateField, user, signUp }) => {
   const history = useHistory();
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,8 +19,7 @@ const Signup = ({ updateField, user }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('user', user);
-    // send user data
+    signUp(user, () => history.push('/articles'));
   };
 
   return (
@@ -98,7 +100,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToPropa = (dispatch) => ({
   updateField: (fieldName, value) => dispatch(changeField(fieldName, value)),
-  actionSignup: (fieldName, value) => dispatch(changeField(fieldName, value)),
+  signUp: (user, callBack) => dispatch(signUpAction(user, callBack)),
 });
 
 Signup.propTypes = {

@@ -14,4 +14,9 @@ export const useStyles = makeStyles({
   pos: {
     marginBottom: 12,
   },
+  image: {
+    width: '100%',
+    maxWidth: '400px',
+    height: 'auto',
+  },
 });

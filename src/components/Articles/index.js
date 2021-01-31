@@ -1,49 +1,41 @@
-import React from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Container, Grid, TextField } from '@material-ui/core';
+import { useParams } from 'react-router-dom';
+
 import { connect } from 'react-redux';
-import { changeField } from '../../redux/actions';
-import { useStyles } from './style';
-import { useHistory } from 'react-router-dom';
+import { fetchArticleAction } from '../../redux/actions';
+
 import ArticlesList from './ArticlesList';
 import Article from './Article';
+import { useStyles } from './style';
 
-const Articles = ({ user }) => {
-  const history = useHistory();
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-  };
+import { Container, Grid } from '@material-ui/core';
+
+const Articles = ({ fetchArticle }) => {
   const classes = useStyles();
+  const { id } = useParams();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('user', user);
-    // send user data
-  };
+  useEffect(() => {
+    if (id) fetchArticle(id);
+  }, [id]);
 
   return (
     <Container className={classes.container}>
       <Grid container spacing={1}>
-        <Grid item xs={4}>
+        <Grid item xs={3}>
           <ArticlesList />
         </Grid>
         <Grid item xs={8}>
-          <Article articleData={{}} />
+          <Article />
         </Grid>
       </Grid>
     </Container>
   );
 };
-const mapStateToProps = (state) => {
-  const user = state.auth;
-  return {
-    user,
-  };
-};
 
 const mapDispatchToPropa = (dispatch) => ({
-  updateField: (fieldName, value) => dispatch(changeField(fieldName, value)),
-  actionSignup: (fieldName, value) => dispatch(changeField(fieldName, value)),
+  fetchArticle: (articleId) => dispatch(fetchArticleAction(articleId)),
 });
 
 Articles.propTypes = {
@@ -55,4 +47,4 @@ Articles.defaultProps = {
   user: {},
 };
 
-export default connect(mapStateToProps, mapDispatchToPropa)(Articles);
+export default connect(null, mapDispatchToPropa)(Articles);

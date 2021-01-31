@@ -2,10 +2,10 @@ import { ARTICLE_INITIAL_STATE, ArticleActionTypes } from '../actions';
 
 const articleReducer = (state = ARTICLE_INITIAL_STATE, action) => {
   switch (action.type) {
-    case ArticleActionTypes.CHANGE_ARTICLE_FIELD:
+    case ArticleActionTypes.FETCH_ARTICLE_SUCCESS:
       return {
         ...state,
-        article: { ...state.article, [action.fieldName]: action.fieldValue },
+        article: action.payload,
       };
 
     case ArticleActionTypes.SUCESS_FETCH_ARTICLES:

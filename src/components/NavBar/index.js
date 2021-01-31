@@ -2,10 +2,11 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
 import { useHistory } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { logoutAction } from '../../redux/actions';
+import { Grid } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function NavBar() {
+const NavBar = ({ logout, user }) => {
   const classes = useStyles();
   const history = useHistory();
 
@@ -27,29 +28,68 @@ export default function NavBar() {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            {/* <MenuIcon /> */}
-          </IconButton>
-          <Button
-            color="inherit"
-            className={classes.menuButton}
-            onClick={() => history.push('/articles')}
-          >
-            Articles
-          </Button>
-          <Button
-            color="inherit"
-            className={classes.menuButton}
-            onClick={() => history.push('/articles/articleForm/new')}
-          >
-            Add Article
-          </Button>
-          {/* <Typography variant="h6" className={classes.title}>
-            News
-          </Typography> */}
-          {/* <Button color="inherit">Login</Button> */}
+          <Grid container justify="space-around">
+            <Grid item xs container>
+              {user?.isLoggedIn && (
+                <>
+                  <Button
+                    color="inherit"
+                    className={classes.menuButton}
+                    onClick={() => history.push('/articles')}
+                  >
+                    Articles
+                  </Button>
+                  <Button
+                    color="inherit"
+                    className={classes.menuButton}
+                    onClick={() => history.push('/articles/articleForm/new')}
+                  >
+                    Add Article
+                  </Button>
+                </>
+              )}
+            </Grid>
+            <Grid item xs container justify="flex-end">
+              {user.isLoggedIn && (
+                <Button color="inherit" className={classes.menuButton} onClick={() => logout()}>
+                  Logout
+                </Button>
+              )}
+              {!user.isLoggedIn && (
+                <>
+                  <Button
+                    color="inherit"
+                    className={classes.menuButton}
+                    onClick={() => history.push('/signin')}
+                  >
+                    Signin
+                  </Button>
+                  <Button
+                    color="inherit"
+                    className={classes.menuButton}
+                    onClick={() => history.push('/signup')}
+                  >
+                    Signup
+                  </Button>
+                </>
+              )}
+            </Grid>
+          </Grid>
         </Toolbar>
       </AppBar>
     </div>
   );
-}
+};
+
+const mapStateToProps = (state) => {
+  const user = state.auth;
+  return {
+    user,
+  };
+};
+
+const mapDispatchToPropa = (dispatch) => ({
+  logout: () => dispatch(logoutAction()),
+});
+
+export default connect(mapStateToProps, mapDispatchToPropa)(NavBar);
