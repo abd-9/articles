@@ -52,6 +52,7 @@ const App = ({ user }) => {
       ])
     );
   }, []);
+
   return (
     <div className="App">
       <header className="App-header">

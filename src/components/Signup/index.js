@@ -30,6 +30,7 @@ const Signup = ({ user, signUp }) => {
       <form onSubmit={handleSubmit}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
+            <h1>Signup</h1>
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <TextField

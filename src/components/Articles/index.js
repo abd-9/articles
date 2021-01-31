@@ -22,7 +22,7 @@ const Articles = ({ fetchArticle }) => {
 
   return (
     <Container className={classes.container}>
-      <Grid container spacing={1}>
+      <Grid container justify="space-around">
         <Grid item xs={3}>
           <ArticlesList />
         </Grid>

@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     maxWidth: 360,
     backgroundColor: theme.palette.background,
+    border: '1px solid rgba(0, 0, 0, 0.12)',
   },
 }));
 
@@ -27,10 +28,17 @@ const ArticlesList = ({ articlesList, fetchArticles }) => {
   console.log('articles', articlesList);
   return (
     <List component="nav" className={classes.root} aria-label="contacts">
-      {articlesList?.map((a) => (
-        <ListItem button key={a.id} onClick={() => history.push(`/articles/${a.id}`)}>
-          <ListItemText primary={a.title} />
-        </ListItem>
+      {articlesList?.map((a, index) => (
+        <>
+          <ListItem
+            divider={index < articlesList.length - 1}
+            button
+            key={a.id}
+            onClick={() => history.push(`/articles/${a.id}`)}
+          >
+            <ListItemText primary={a.title} />
+          </ListItem>
+        </>
       ))}
     </List>
   );
