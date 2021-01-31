@@ -39,7 +39,6 @@ const mapDispatchToPropa = (dispatch) => ({
 });
 
 Articles.propTypes = {
-  updateField: PropTypes.func.isRequired,
   user: PropTypes.shape({}),
 };
 

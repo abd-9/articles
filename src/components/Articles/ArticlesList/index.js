@@ -29,16 +29,14 @@ const ArticlesList = ({ articlesList, fetchArticles }) => {
   return (
     <List component="nav" className={classes.root} aria-label="contacts">
       {articlesList?.map((a, index) => (
-        <>
-          <ListItem
-            divider={index < articlesList.length - 1}
-            button
-            key={a.id}
-            onClick={() => history.push(`/articles/${a.id}`)}
-          >
-            <ListItemText primary={a.title} />
-          </ListItem>
-        </>
+        <ListItem
+          divider={index < articlesList.length - 1}
+          button
+          key={a.id}
+          onClick={() => history.push(`/articles/${a.id}`)}
+        >
+          <ListItemText primary={a.title} />
+        </ListItem>
       ))}
     </List>
   );
@@ -54,9 +52,7 @@ const mapDispatchToPropa = (dispatch) => ({
   fetchArticles: () => dispatch(fetchArticlesStartAction()),
 });
 
-ArticlesList.propTypes = {
-  updateField: PropTypes.func.isRequired,
-};
+ArticlesList.propTypes = {};
 
 ArticlesList.defaultProps = {};
 

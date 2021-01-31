@@ -59,7 +59,7 @@ const App = ({ user }) => {
         <ToastContainer />
         <NavBar></NavBar>
       </header>
-      <body>
+      <main>
         <Switch>
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/signin" component={Signin} />
@@ -72,7 +72,7 @@ const App = ({ user }) => {
           )}
           <Route component={NotFound} />
         </Switch>
-      </body>
+      </main>
       <footer></footer>
     </div>
   );

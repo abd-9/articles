@@ -99,11 +99,7 @@ const ArticleForm = ({ article, fetchArticle, addArticle, updateArticle, setUser
             {errors.content}
           </Grid>
           <Grid item xs={12} sm={12} lg={12}>
-            <input
-              type="file"
-              inputProps={{ accept: 'image/*' }}
-              onChange={(e) => handleFileRead(e)}
-            ></input>
+            <input type="file" accept="image/*, " onChange={(e) => handleFileRead(e)}></input>
             {values.image ? <button onClick={removeImage}>Remove</button> : <></>}
             <Grid item xs={12} sm={12} lg={12}>
               <img src={values.image || ''} className={classes.image} />
@@ -137,7 +133,6 @@ const mapDispatchToPropa = (dispatch) => ({
 });
 
 ArticleForm.propTypes = {
-  updateField: PropTypes.func.isRequired,
   article: PropTypes.shape({}),
 };
 
