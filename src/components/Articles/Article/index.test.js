@@ -28,9 +28,9 @@ describe('Article Component', () => {
       article: {
         article: {
           id: '1111',
-          title: 'test1',
-          creationDate: 'sss',
-          content: 'asdasda',
+          title: 'title 1',
+          creationDate: 'today',
+          content: 'contetn test',
           image: '',
           userName: 'ss',
         },
@@ -62,5 +62,12 @@ describe('Article Component', () => {
 
     const component = wrapper.find('#articleButtons');
     expect(component).toHaveLength(0);
+  });
+
+  it('display props', () => {
+    const labelTitle = wrapper.find({ name: 'title' });
+    const lableCreationDate = wrapper.find({ name: 'creationDate' });
+    expect(lableCreationDate.text()).toContain('today');
+    expect(labelTitle.text()).toContain('title 1');
   });
 });

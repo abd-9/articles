@@ -27,7 +27,7 @@ import { validationSchema } from './helper';
 const ArticleForm = ({ article, fetchArticle, addArticle, updateArticle, setUser, user }) => {
   const history = useHistory();
   const classes = useStyles();
-  const { id } = useParams();
+  const id = 'new'; //have to changed
 
   const { handleSubmit, handleChange, values, setFieldValue, errors } = useFormik({
     enableReinitialize: true,
@@ -65,10 +65,9 @@ const ArticleForm = ({ article, fetchArticle, addArticle, updateArticle, setUser
   const removeImage = () => {
     setFieldValue('image', '');
   };
-
   return (
     <Container className={classes.container}>
-      <form onSubmit={handleSubmit}>
+      <form value={values} onSubmit={handleSubmit} id="articleForm">
         <h2>{id === 'new' ? 'New Article' : 'Edit Article'}</h2>
         <Grid container spacing={1}>
           <Grid item xs={4} container>
@@ -83,20 +82,21 @@ const ArticleForm = ({ article, fetchArticle, addArticle, updateArticle, setUser
               error={errors.title}
             />
           </Grid>
-
+          <input name="test" type="text"></input>
           <Grid item xs={12} sm={12} lg={12}>
             <CKEditor
+              name="content"
               editor={ClassicEditor}
               data={values.content}
               onChange={(event, editor) => {
-                const data = editor.getData();
-                setFieldValue('content', data, true);
+                const data = editor?.getData() || event?.target?.value;
+                if (data !== undefined) setFieldValue('content', data, true);
               }}
               config={{
                 removePlugins: ['ImageEmbed', 'ImageUpload'],
               }}
             />
-            {errors.content}
+            {errors.content || ''}
           </Grid>
           <Grid item xs={12} sm={12} lg={12}>
             <input type="file" accept="image/*, " onChange={(e) => handleFileRead(e)}></input>
@@ -106,7 +106,7 @@ const ArticleForm = ({ article, fetchArticle, addArticle, updateArticle, setUser
             </Grid>
           </Grid>
           <Grid item xs={4} container>
-            <Button color="primary" variant="contained" type="submit">
+            <Button color="primary" variant="contained" name="submitBtn" type="submit">
               {id === 'new' ? 'Create' : 'Update'}
             </Button>
           </Grid>

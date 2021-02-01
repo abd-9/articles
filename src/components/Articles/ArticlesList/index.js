@@ -26,6 +26,11 @@ const ArticlesList = ({ articlesList, fetchArticles }) => {
 
   return (
     <List component="nav" className={classes.root} aria-label="contacts">
+      {articlesList?.length === 0 && (
+        <ListItem divider button onClick={() => history.push('/articles/articleForm/new')}>
+          <ListItemText primary="Add Article +" />
+        </ListItem>
+      )}
       {articlesList?.map((a, index) => (
         <ListItem
           divider={index < articlesList.length - 1}

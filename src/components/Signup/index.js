@@ -9,94 +9,94 @@ import { signUpAction } from '../../redux/actions';
 import { Button, Container, Grid, TextField } from '@material-ui/core';
 import { useStyles } from './style';
 import { validationSchema } from './helper';
-import { useFormik } from 'formik';
+import { Formik } from 'formik';
 
 const Signup = ({ user, signUp }) => {
   const history = useHistory();
 
   const classes = useStyles();
-
-  const { handleSubmit, handleChange, values, errors } = useFormik({
-    enableReinitialize: true,
-    initialValues: user,
-    validationSchema: validationSchema,
-    onSubmit: (_values) => {
-      signUp(_values, () => history.push('/articles'));
-    },
-  });
-
   return (
-    <Container className={classes.container} maxWidth="xs">
-      <form onSubmit={handleSubmit}>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <h1>Signup</h1>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  label="First Name"
-                  name="firstName"
-                  placeholder="First name"
-                  size="small"
-                  variant="outlined"
-                  value={values.firstName}
-                  onChange={handleChange}
-                  error={errors.firstName}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  label="Last Name"
-                  name="lastName"
-                  size="small"
-                  variant="outlined"
-                  value={values.lastName}
-                  onChange={handleChange}
-                  error={errors.lastName}
-                />
-              </Grid>
+    <Container className={classes.container} maxWidth="xs" id="signForm">
+      <Formik
+        enableReinitialize
+        validationSchema={validationSchema}
+        initialValues={user}
+        onSubmit={(_values) => signUp(_values, () => history.push('/articles'))}
+      >
+        {({ values, errors, handleChange, handleSubmit }) => (
+          <form onSubmit={handleSubmit}>
+            <Grid container spacing={3}>
               <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Username"
-                  name="userName"
-                  size="small"
-                  variant="outlined"
-                  value={values.userName}
-                  onChange={handleChange}
-                  error={errors.userName}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Password"
-                  name="password"
-                  size="small"
-                  type="password"
-                  variant="outlined"
-                  value={values.password}
-                  onChange={handleChange}
-                  error={errors.password}
-                  helperText={errors.password}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Button color="secondary" fullWidth type="submit" variant="contained">
-                  Signup
-                </Button>
-              </Grid>
-              <Grid item xs={12}>
-                <Button fullWidth onClick={() => history.push('/signin')}>
-                  i already have an acount
-                </Button>
+                <h1>Signup</h1>
+
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <TextField
+                      fullWidth
+                      label="First Name"
+                      name="firstName"
+                      placeholder="First name"
+                      size="small"
+                      variant="outlined"
+                      value={values.firstName}
+                      onChange={handleChange}
+                      error={Boolean(errors.firstName)}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      fullWidth
+                      label="Last Name"
+                      name="lastName"
+                      size="small"
+                      variant="outlined"
+                      value={values.lastName}
+                      onChange={handleChange}
+                      error={Boolean(errors.lastName)}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Username"
+                      name="userName"
+                      size="small"
+                      variant="outlined"
+                      value={values.userName}
+                      onChange={handleChange}
+                      error={Boolean(errors.userName)}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Password"
+                      name="password"
+                      size="small"
+                      type="password"
+                      variant="outlined"
+                      value={values.password}
+                      onChange={handleChange}
+                      error={Boolean(errors.password)}
+                      helperText={errors.password}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Button color="secondary" fullWidth type="submit" variant="contained">
+                      Signup
+                    </Button>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Button fullWidth onClick={() => history.push('/signin')}>
+                      i already have an acount
+                    </Button>
+                  </Grid>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-        </Grid>
-      </form>
+          </form>
+        )}
+      </Formik>
     </Container>
   );
 };

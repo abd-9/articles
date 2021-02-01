@@ -24,14 +24,20 @@ const Article = ({ articleData, deleteArticl, user }) => {
   return articleData.id ? (
     <Card className={classes.root} variant="outlined" id="articleCard">
       <CardContent>
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
+        <Typography
+          className={classes.title}
+          color="textSecondary"
+          gutterBottom
+          name="creationDate"
+        >
           {articleData.creationDate}
         </Typography>
-        <Typography variant="h5" component="h2">
+        <Typography variant="h5" component="h2" name="title">
           {articleData.title}
         </Typography>
         <img src={articleData.image || ''} className={classes.image} />
         <Typography
+          name="content"
           variant="body2"
           component="div"
           dangerouslySetInnerHTML={{ __html: articleData.content || <></> }}

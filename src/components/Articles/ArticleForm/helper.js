@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
 export const validationSchema = yup.object({
-  title: yup.string().required('title is required'),
-  content: yup.string().required('content is required'),
+  title: yup.string().trim().required('title is required'),
+  content: yup.string().trim().required('content is required'),
 });
