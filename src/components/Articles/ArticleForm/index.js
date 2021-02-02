@@ -27,7 +27,9 @@ import { validationSchema } from './helper';
 const ArticleForm = ({ article, fetchArticle, addArticle, updateArticle, setUser, user }) => {
   const history = useHistory();
   const classes = useStyles();
-  const id = 'new'; //have to changed
+
+  const parms = useParams();
+  const id = parms?.id || 'new';
 
   const { handleSubmit, handleChange, values, setFieldValue, errors } = useFormik({
     enableReinitialize: true,

@@ -4,6 +4,8 @@ import React from 'react';
 import { testStore } from '../../../config/Utils';
 import '@testing-library/jest-dom/extend-expect';
 
+import routeData from 'react-router';
+
 const setUp = (initialState = {}) => {
   const store = testStore(initialState);
   const wrapper = shallow(<Article store={store} />)
@@ -14,8 +16,17 @@ const setUp = (initialState = {}) => {
 };
 
 describe('ArticleForm Component', () => {
+  const mockLocation = {
+    pathname: '/welcome',
+    hash: '',
+    search: '',
+    state: '',
+  };
+
   let wrapper;
   beforeEach(() => {
+    jest.spyOn(routeData, 'useParams').mockReturnValue(mockLocation);
+
     const initialState = {
       auth: {
         firstName: 'ss',
