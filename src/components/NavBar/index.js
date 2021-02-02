@@ -26,7 +26,7 @@ const NavBar = ({ logout, user }) => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" id="navBar">
         <Toolbar>
           <Grid container justify="space-around">
             <Grid item xs container>
@@ -34,6 +34,7 @@ const NavBar = ({ logout, user }) => {
                 <>
                   <Button
                     color="inherit"
+                    id="articlButton"
                     className={classes.menuButton}
                     onClick={() => history.push('/articles')}
                   >
